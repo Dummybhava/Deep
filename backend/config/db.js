@@ -25,9 +25,9 @@ const connectMongoDB = async () => {
 // MySQL connection pool
 const mysqlPool = mysql.createPool({
   host: process.env.MYSQL_HOST || 'localhost',
-  port: process.env.MYSQL_PORT || 3307,     
+  port: process.env.MYSQL_PORT || 3306,     
   user: process.env.MYSQL_USER || 'root',
-  password: process.env.MYSQL_PASSWORD || '4563',
+  password: process.env.MYSQL_PASSWORD || '6666',
   database: process.env.MYSQL_DATABASE || 'smartcity',
   waitForConnections: true,
   connectionLimit: 10,
