@@ -15,6 +15,7 @@ const axios = require('axios');
 const config = require('../config/config');
 const { WebSocket } = require('ws');
 
+exports = module.exports
 // Get all transportation options
 exports.getAllTransportation = async (req, res) => {
   try {

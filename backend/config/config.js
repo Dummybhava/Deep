@@ -1,13 +1,14 @@
 /**
  * Configuration settings for Smart City Application
  */
+require('dotenv').config();
+
 module.exports = {
   // JWT Configuration
   jwt: {
-    secret: process.env.JWT_SECRET || 'smartcity-secret-key',
-    expiresIn: process.env.JWT_EXPIRES || '7d',
+    secret: process.env.JWT_SECRET || 'smartcity-secret-token',
+    expiresIn: process.env.JWT_EXPIRES || '7d'
   },
-  
   // OAuth Configuration
   oauth: {
     google: {

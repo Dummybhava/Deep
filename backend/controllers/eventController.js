@@ -5,6 +5,7 @@ const Event = require('../models/Event');
 const sitecoreService = require('../services/sitecoreService');
 const notificationController = require('./notificationController');
 
+exports = module.exports
 // Get all events
 exports.getAllEvents = async (req, res) => {
   try {
