@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { api } from '../services/api.js';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
@@ -110,31 +111,34 @@ export const logout = async () => {
 // Get current authenticated user
 export const getCurrentUser = async () => {
   try {
-    const token = localStorage.getItem('token');
+
+      return await api.get('/auth/me');
+    // const token = localStorage.getItem('token');
     
-    if (!token) {
-      return null;
-    }
+    // if (!token) {
+    //   return null;
+    // }
     
-    const res = await axios.get(`${API_URL}/auth/me`, {
-      headers: {
-        'x-auth-token': token
-      }
-    });
+    // const res = await axios.get(`${API_URL}/auth/me`, {
+    //   headers: {
+    //     'x-auth-token': token
+    //   }
+    // });
     
-    if (res.data) {
-      // Update user info in localStorage
-      localStorage.setItem('user', JSON.stringify(res.data));
-      return res.data;
-    }
+    // if (res.data) {
+    //   // Update user info in localStorage
+    //   localStorage.setItem('user', JSON.stringify(res.data));
+    //   return res.data;
+    // }
     
-    return null;
+   // return null;
   } catch (err) {
     console.error('Get current user error:', err);
     // Clear invalid token
     if (err.response && err.response.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
+      // window.location.href = '/login';
     }
     return null;
   }

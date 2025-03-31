@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getAttractionById, submitAttractionReview, saveItem } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { formatDate } from '../../utils/helpers';
+import '../../cssStyles/attractions/AttractionDetails.css'
 
 const AttractionDetails = () => {
   const { id } = useParams();

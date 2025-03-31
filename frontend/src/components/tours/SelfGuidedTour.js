@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getTourById, getToursList, startTour, completeTour, submitTourReview } from '../../services/api';
 import { initializeMap, addTileLayer, getRouteColor } from '../../services/map';
 import { formatDuration, formatDistance } from '../../utils/helpers';
+import '../../cssStyles/tours/SelfGuidedTour.css'
 
 const SelfGuidedTour = () => {
   const { id } = useParams();

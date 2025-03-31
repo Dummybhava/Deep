@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { getMapConfig, getPointsOfInterest } from '../../services/api';
 import { initializeMap, addTileLayer, loadPointsOfInterest } from '../../services/map';
+import '../../cssStyles/maps/mapview.css'
 
 const MapView = () => {
   const mapContainerRef = useRef(null);

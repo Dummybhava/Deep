@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import '../../cssStyles/auth/Login.css'
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -113,7 +114,6 @@ const Login = () => {
           <div className="mb-3">
             <div className="d-flex justify-content-between align-items-center">
               <label htmlFor="password" className="form-label">Password</label>
-              <a href="/forgot-password" className="small text-decoration-none">Forgot password?</a>
             </div>
             <div className="input-group">
               <span className="input-group-text"><i className="fas fa-lock"></i></span>
@@ -175,6 +175,7 @@ const Login = () => {
         
         <div className="auth-footer">
           <p>Don't have an account? <Link to="/register">Sign up</Link></p>
+          <a href="/forgot-password" className="small text-decoration-none">Forgot password?</a>
         </div>
       </div>
     </div>

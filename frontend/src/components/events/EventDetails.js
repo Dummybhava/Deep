@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getEventById, rsvpToEvent, saveItem } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { formatDate, formatTime, formatRelativeTime } from '../../utils/helpers';
+import '../../cssStyles/event/EventDetails.css'
 
 const EventDetails = () => {
   const { id } = useParams();

@@ -173,6 +173,7 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
+exports = module.exports
 // Update user role (admin only)
 exports.updateUserRole = async (req, res) => {
   try {

@@ -7,6 +7,7 @@ import {
   getTransportationStatus,
   getToursList
 } from '../../services/api';
+import '../../cssStyles/dashboard/Dashboard.css'
 import { formatDate, formatTime } from '../../utils/helpers';
 
 const Dashboard = ({ wsConnected }) => {

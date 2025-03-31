@@ -1,142 +1,133 @@
-// models/attraction.model.js
+const mongoose = require('mongoose');
 
-module.exports = (sequelize, DataTypes) => {
-  const Attraction = sequelize.define('Attraction', {
+const AttractionSchema = new mongoose.Schema({
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
+      type: Number, // Mongoose uses Number instead of DataTypes.INTEGER
+      autoIncrement: true, // Mongoose does not support auto-increment natively (Use a plugin like mongoose-sequence)
+      primaryKey: true // Not needed in Mongoose
     },
     name: {
-      type: DataTypes.STRING,
-      allowNull: false
+      type: String, // Replaced DataTypes.STRING
+      required: true
     },
     slug: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: String,
+      required: true,
       unique: true
     },
     description: {
-      type: DataTypes.TEXT,
-      allowNull: false
+      type: String // Changed from DataTypes.TEXT to String
     },
     shortDescription: {
-      type: DataTypes.TEXT,
-      allowNull: false
+      type: String
     },
     category: {
-      type: DataTypes.ENUM('landmark', 'food', 'retail', 'recreation', 'entertainment', 'education', 'service', 'other'),
-      allowNull: false
+      type: String, // Mongoose does not support ENUM natively, handle it manually
+      enum: ['landmark', 'food', 'retail', 'recreation', 'entertainment', 'education', 'service', 'other'],
+      required: true
     },
     subCategory: {
-      type: DataTypes.STRING
+      type: String
     },
     type: {
-      type: DataTypes.ENUM('point', 'area', 'building')
+      type: String,
+      enum: ['point', 'area', 'building']
     },
     location: {
-      type: DataTypes.GEOMETRY('POINT')
+      type: { type: String, enum: ['Point'], default: 'Point' }, // GeoJSON format for Mongoose
+      coordinates: { type: [Number], default: [0, 0] } // [longitude, latitude]
     },
-    // Address
-    street: DataTypes.STRING,
-    city: DataTypes.STRING,
-    state: DataTypes.STRING,
-    postalCode: DataTypes.STRING,
-    country: DataTypes.STRING,
+    street: String,
+    city: String,
+    state: String,
+    postalCode: String,
+    country: String,
 
-    // Contact
-    phone: DataTypes.STRING,
-    email: DataTypes.STRING,
-    website: DataTypes.STRING,
+    phone: String,
+    email: String,
+    website: String,
 
-    // Images (JSON)
     images: {
-      type: DataTypes.JSONB,
-      defaultValue: []
+      type: [String], // JSONB changed to an array of strings (URLs)
+      default: []
     },
 
-    // Amenities
     amenities: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
-      defaultValue: []
+      type: [String], // ARRAY type changed to Array
+      default: []
     },
 
-    // Hours of Operation
     hoursOfOperation: {
-      type: DataTypes.JSONB,
-      defaultValue: []
+      type: Object, // JSONB changed to Object
+      default: {}
     },
 
     featured: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+      type: Boolean,
+      default: false
     },
 
-    // Ratings
     averageRating: {
-      type: DataTypes.FLOAT,
-      defaultValue: 0
+      type: Number,
+      default: 0
     },
     ratingCount: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0
+      type: Number,
+      default: 0
     },
 
-    // Price
     priceLevel: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0
+      type: Number,
+      default: 0
     },
-    priceDescription: DataTypes.STRING,
+    priceDescription: String,
 
-    // Accessibility
     wheelchairAccessible: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+      type: Boolean,
+      default: false
     },
     brailleSignage: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+      type: Boolean,
+      default: false
     },
     audioGuides: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+      type: Boolean,
+      default: false
     },
     serviceAnimalsAllowed: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true
+      type: Boolean,
+      default: true
     },
-    accessibilityRating: DataTypes.FLOAT,
+    accessibilityRating: {
+      type: Number
+    },
 
     tags: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
-      defaultValue: []
+      type: [String],
+      default: []
     },
 
     publishedStatus: {
-      type: DataTypes.ENUM('draft', 'published', 'archived'),
-      defaultValue: 'published'
+      type: String,
+      enum: ['draft', 'published', 'archived'],
+      default: 'published'
     },
 
-    // Food Options
     foodOptions: {
-      type: DataTypes.JSONB,
-      defaultValue: {}
+      type: Object,
+      default: {}
     },
 
-    // Retail Info
     retailInfo: {
-      type: DataTypes.JSONB,
-      defaultValue: {}
+      type: Object,
+      default: {}
     },
 
-    sitecoreId: {
-      type: DataTypes.STRING
-    }
-  }, {
-    tableName: 'attractions',
+    sitecoreId: String
+  },
+  {
     timestamps: true
-  });
+  }
+);
 
-  return Attraction;
-};
+module.exports = mongoose.model('Attraction', AttractionSchema);

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { initializeWebSocket, sendMessage } from '../../services/websocket';
+import '../../cssStyles/transportation/TransportationTracker.css'
 
 const TransportationTracker = () => {
   const [connected, setConnected] = useState(false);

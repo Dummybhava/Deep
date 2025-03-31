@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { searchPOI, getNearbyAttractions } from '../../services/api';
 import { initializeMap, addTileLayer, addPOIMarker } from '../../services/map';
 import { debounce } from '../../utils/helpers';
+import '../../cssStyles/maps/POISearch.css'
 
 const POISearch = () => {
   const navigate = useNavigate();

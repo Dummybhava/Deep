@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { submitFeedback, reportIncident, getUserFeedback } from '../../services/api';
+import '../../cssStyles/feeback/FeedbackForm.css'
 
 const FeedbackForm = () => {
   const navigate = useNavigate();

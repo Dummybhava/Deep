@@ -11,6 +11,8 @@ const connectMongoDB = async () => {
     const conn = await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/smartcity', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      // useCreateIndex: true,
+      // useFindAndModify: false
     });
     
     console.log(`MongoDB Connected: ${conn.connection.host}`);
@@ -18,7 +20,7 @@ const connectMongoDB = async () => {
   } catch (error) {
     console.error(`Error connecting to MongoDB: ${error.message}`);
     console.warn('Server will continue without MongoDB connection');
-    return null;
+    
   }
 };
 

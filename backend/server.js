@@ -3,10 +3,10 @@
  * Main entry point for the backend server that powers the Smart City mobile app and web portal
  */
 const express = require('express');
+require('dotenv').config();
 const cors = require('cors');
 const http = require('http');
 const { WebSocketServer } = require('ws');
-const mongoose = require('mongoose');
 const morgan = require('morgan');
 const path = require('path');
 const { connectDB } = require('./config/db');
@@ -20,6 +20,7 @@ const notificationsRoutes = require('./routes/notifications');
 const mapsRoutes = require('./routes/maps');
 const usersRoutes = require('./routes/users');
 const { initializeWebSocketServer } = require('./services/websocketService');
+const tourRoutes = require('./routes/tourRoutes');
 
 // Initialize Express app
 const app = express();
@@ -32,8 +33,12 @@ const server = http.createServer(app);
 const wss = new WebSocketServer({ server, path: '/ws' });
 initializeWebSocketServer(wss);
 
-// Connect to Database
-connectDB();
+// Connect to Database and start server
+connectDB().then(() => {
+  server.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on http://0.0.0.0:${PORT}`);
+  });
+});
 
 // Middleware
 app.use(cors());
@@ -51,6 +56,7 @@ app.use('/api/feedback', feedbackRoutes);
 app.use('/api/notifications', notificationsRoutes);
 app.use('/api/maps', mapsRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/tours', tourRoutes);
 
 // Serve static files if in production
 if (process.env.NODE_ENV === 'production') {
@@ -73,11 +79,6 @@ app.use((err, req, res, next) => {
     success: false,
     error: err.message || 'Server Error',
   });
-});
-
-// Start the server
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on http://0.0.0.0:${PORT}`);
 });
 
 // Handle unhandled promise rejections

@@ -29,11 +29,40 @@ const Layout = () => {
   const fetchNotifications = async () => {
     try {
       setNotificationsLoading(true);
-      const response = await getNotifications({ limit: 10 });
-      setNotifications(response.notifications || []);
-      setUnreadCount(response.unreadCount || 0);
+      
+      // 1. Make API call with error handling
+      const response = await getNotifications({ limit: 10 })
+        .catch(err => {
+          throw new Error(err.response?.data?.message || 'Failed to fetch notifications');
+        });
+  
+      // 2. Validate response structure
+      if (!response?.data) {
+        throw new Error('Invalid response format');
+      }
+  
+      // 3. Safely update state
+      setNotifications(Array.isArray(response.data.notifications) 
+        ? response.data.notifications 
+        : []);
+      
+      setUnreadCount(typeof response.data.unreadCount === 'number'
+        ? response.data.unreadCount
+        : 0);
+        
     } catch (error) {
-      console.error('Error fetching notifications:', error);
+      // 4. Improved error handling
+      console.error('Notification fetch error:', error.message);
+      
+      // Set error state for UI feedback
+      console.log({
+        message: error.message || 'Failed to load notifications',
+        retryable: true
+      });
+      
+      // Optional: Retry logic
+      // setTimeout(fetchNotifications, 3000);
+      
     } finally {
       setNotificationsLoading(false);
     }
