@@ -14,6 +14,7 @@ const config = require('../config/config');
 const path = require('path');
 const fs = require('fs');
 
+exports = module.exports
 // Get map configuration and settings
 exports.getMapConfig = async (req, res) => {
   try {

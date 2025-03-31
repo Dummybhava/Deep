@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getNotifications, sendNotification, broadcastNotification, deleteNotification } from '../../services/api';
 import { formatRelativeTime } from '../../utils/helpers';
+import '../../cssStyles/admin/NotificationManager.css'
 
 const NotificationManager = () => {
   const [notifications, setNotifications] = useState([]);

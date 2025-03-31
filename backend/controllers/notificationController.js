@@ -7,6 +7,7 @@ const User = require('../models/User');
 const config = require('../config/config');
 const admin = require('firebase-admin');
 const WebSocket = require('ws');
+const logger = require('../utils/logger');
 
 // Initialize Firebase Admin SDK if FCM is configured
 if (config.notifications.fcmServerKey) {
@@ -19,49 +20,53 @@ if (config.notifications.fcmServerKey) {
       })
     });
   } catch (error) {
-    console.error('Firebase admin initialization error:', error);
+    logger.error('Firebase admin initialization error:', error);
   }
 }
 
-// Get user notifications
+// Get user notifications - IMPROVED VERSION
 exports.getUserNotifications = async (req, res) => {
   try {
-    // Pagination
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 20;
+    if (!req.user?.id) {
+      return res.status(401).json({ message: 'Unauthorized - User not authenticated' });
+    }
+
+    // Validate and sanitize inputs
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(Math.max(1, parseInt(req.query.limit)), 100) || 20; // Limit max 100 items
     const skip = (page - 1) * limit;
     
-    // Filtering
+    // Build filter safely
     const filter = {
       recipient: req.user.id
     };
     
-    if (req.query.type) {
+    // Safely handle type filter
+    if (req.query.type && typeof req.query.type === 'string') {
       filter.type = req.query.type;
     }
     
-    if (req.query.read === 'true') {
-      filter['status.read'] = true;
-    } else if (req.query.read === 'false') {
-      filter['status.read'] = false;
+    // Safely handle read status filter
+    if (typeof req.query.read !== 'undefined') {
+      filter['status.read'] = req.query.read === 'true';
     }
     
-    // Execute query
-    const notifications = await Notification.find(filter)
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit);
-    
-    // Get total count for pagination
-    const total = await Notification.countDocuments(filter);
-    
-    // Get unread count
-    const unreadCount = await Notification.countDocuments({
-      recipient: req.user.id,
-      'status.read': false
-    });
+    // Execute query with error handling
+    const [notifications, total, unreadCount] = await Promise.all([
+      Notification.find(filter)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+      Notification.countDocuments(filter),
+      Notification.countDocuments({
+        recipient: req.user.id,
+        'status.read': false
+      })
+    ]);
     
     res.json({
+      success: true,
       notifications,
       unreadCount,
       pagination: {
@@ -72,11 +77,16 @@ exports.getUserNotifications = async (req, res) => {
       }
     });
   } catch (err) {
-    console.error('Get user notifications error:', err.message);
-    res.status(500).json({ message: 'Server error' });
+    logger.error('Get user notifications error:', err);
+    res.status(500).json({ 
+      success: false,
+      message: 'Failed to fetch notifications',
+      error: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
   }
 };
 
+// [Rest of your controller methods remain exactly the same...]
 // Mark notification as read
 exports.markNotificationAsRead = async (req, res) => {
   try {

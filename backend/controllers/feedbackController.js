@@ -6,6 +6,7 @@ const { Feedback, Incident } = require('../models/Feedback');
 const User = require('../models/User');
 const { Notification } = require('../models/Notification');
 
+exports = module.exports
 // Submit general feedback
 exports.submitFeedback = async (req, res) => {
   try {

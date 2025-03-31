@@ -4,6 +4,7 @@ import { getPRTData, getTransportationRoutesByType, getEstimatedArrivalTime } fr
 import { formatTime, formatRelativeTime } from '../../utils/helpers';
 import { addEventHandler } from '../../services/websocket';
 import L from 'leaflet';
+import '../../cssStyles/transportation/PRTTracking.css'
 
 const PRTTracking = () => {
   const [loading, setLoading] = useState(true);
