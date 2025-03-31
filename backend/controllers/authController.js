@@ -5,18 +5,20 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const config = require('../config/config');
 
-// JWT secret from env or use a default for development
-const JWT_SECRET = process.env.JWT_SECRET || 'devjwtsecret';
-// Token expiration
-const JWT_EXPIRES_IN = '7d';
 
 // Generate JWT token
 const generateToken = (user) => {
   return jwt.sign(
-    { id: user._id, roles: user.roles },
-    JWT_SECRET,
-    { expiresIn: JWT_EXPIRES_IN }
+    { 
+      id: user._id, 
+      roles: user.roles 
+    },
+    config.jwt.secret, // Use from config instead of local variable
+    { 
+      expiresIn: config.jwt.expiresIn 
+    }
   );
 };
 
@@ -120,7 +122,7 @@ exports.login = async (req, res) => {
     user.lastLogin = Date.now();
     await user.save();
     
-    res.json({
+    res.header('x-auth-token', token).json({
       message: 'Login successful',
       token,
       user: user.getPublicProfile()

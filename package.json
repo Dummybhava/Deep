@@ -4,8 +4,8 @@
   "main": "/src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-  "start": "cd frontend && npm start",
-  "build": "cd frontend && npm run build"
+    "start": "cd frontend && npm start",
+    "build": "cd frontend && npm run build"
   },
   "keywords": [],
   "author": "",
@@ -15,11 +15,13 @@
     "axios": "^1.8.4",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "firebase-admin": "^13.2.0",
+    "http-status-codes": "^2.3.0",
     "jsonwebtoken": "^9.0.2",
     "leaflet": "^1.9.4",
-    "mongoose": "^8.13.0",
+    "mongoose": "^8.13.1",
     "morgan": "^1.10.0",
     "mysql2": "^3.14.0",
     "pg": "^8.14.1",
@@ -28,6 +30,7 @@
     "react-feather": "^2.0.10",
     "react-router-dom": "^7.4.0",
     "react-scripts": "^5.0.1",
+    "winston": "^3.17.0",
     "ws": "^8.18.1"
   }
 }

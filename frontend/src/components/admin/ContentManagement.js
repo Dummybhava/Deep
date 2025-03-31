@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import '../../cssStyles/admin/ContentManagement.css';
 import { addAttraction, updateAttraction, deleteAttraction, addEvent, updateEvent, deleteEvent } from '../../services/api';
 
 const ContentManagement = () => {

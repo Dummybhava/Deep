@@ -9,6 +9,7 @@ import {
 import { formatDate, formatTime } from '../../utils/helpers';
 import { addEventHandler } from '../../services/websocket';
 import TransportationTracker from './TransportationTracker';
+import '../../cssStyles/transportation/TransportationDashboard.css'
 
 const TransportationDashboard = () => {
   const [loading, setLoading] = useState(true);

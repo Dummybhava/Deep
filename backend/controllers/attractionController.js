@@ -7,56 +7,14 @@ const sitecoreService = require('../services/sitecoreService');
 // Get all attractions
 exports.getAllAttractions = async (req, res) => {
   try {
-    // Pagination
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 20;
-    const skip = (page - 1) * limit;
-    
-    // Filtering
-    const filter = { publishedStatus: 'published' };
-    
-    if (req.query.featured === 'true') {
-      filter.featured = true;
-    }
-    
-    // Sorting
-    const sort = {};
-    if (req.query.sort) {
-      const sortFields = req.query.sort.split(',');
-      sortFields.forEach(field => {
-        if (field.startsWith('-')) {
-          sort[field.substring(1)] = -1;
-        } else {
-          sort[field] = 1;
-        }
-      });
-    } else {
-      // Default sort
-      sort.name = 1;
-    }
-    
-    // Execute query
-    const attractions = await Attraction.find(filter)
-      .sort(sort)
-      .skip(skip)
-      .limit(limit)
-      .select('name shortDescription category type images location rating featured price');
-    
-    // Get total count for pagination
-    const total = await Attraction.countDocuments(filter);
-    
-    res.json({
-      attractions,
-      pagination: {
-        total,
-        page,
-        limit,
-        pages: Math.ceil(total / limit)
-      }
-    });
+    const attractions = await Attraction.find({});
+    res.json(attractions);
   } catch (err) {
-    console.error('Get all attractions error:', err.message);
-    res.status(500).json({ message: 'Server error' });
+    console.error('Error:', err);
+    res.status(500).json({ 
+      message: 'Server error',
+      error: err.message 
+    });
   }
 };
 

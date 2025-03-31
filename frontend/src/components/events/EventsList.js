@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getEvents } from '../../services/api';
 import { formatDate, formatTime } from '../../utils/helpers';
-import { Calendar } from 'react-feather';
-
+// import { Calendar } from 'react-feather';
+import '../../cssStyles/event/EventsList.css'
 
 const EventsList = () => {
   const [events, setEvents] = useState([]);
@@ -437,7 +437,7 @@ const EventsList = () => {
       ) : (
         <div className="empty-state mt-5">
           <div className="empty-state-icon">
-            <Calender size={48}/>
+            {/* <Calender size={48}/> */}
           </div>
           <h3>No events found</h3>
           <p>No events match your current filters</p>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAllUsers, updateUser, deleteUser, updateUserRole } from '../../services/api';
+import '../../cssStyles/users/UserManagement.css'
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);

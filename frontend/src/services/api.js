@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance with default config
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:8000/api',
+  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -448,7 +448,8 @@ export const removeSavedItem = (itemId, itemType) => {
 };
 
 // Tours APIs
-export const getToursList = (params) => {
+// services/api.js
+export const getTours = (params) => {
   return api.get('/tours', { params });
 };
 
@@ -456,18 +457,27 @@ export const getTourById = (id) => {
   return api.get(`/tours/${id}`);
 };
 
-export const startTour = (id) => {
-  return api.post(`/tours/${id}/start`);
+export const startTour = (tourId) => {
+  return api.post(`/tours/${tourId}/start`);
 };
 
-export const completeTour = (id, feedbackData) => {
-  return api.post(`/tours/${id}/complete`, feedbackData);
+export const completeTour = (tourId, data) => {
+  return api.post(`/tours/${tourId}/complete`, data);
 };
 
-export const getTourReviews = (id) => {
-  return api.get(`/tours/${id}/reviews`);
+export const submitTourReview = (tourId, data) => {
+  return api.post(`/tours/${tourId}/review`, data);
 };
 
-export const submitTourReview = (id, reviewData) => {
-  return api.post(`/tours/${id}/reviews`, reviewData);
+// In your api.js
+export const getToursList = async (params = {}) => {
+  try {
+    const response = await api.get('/tours', { params });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching tours:', error);
+    throw error.response?.data || { message: 'Failed to fetch tours' };
+  }
 };
+
+export { api };

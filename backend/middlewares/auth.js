@@ -8,7 +8,7 @@ const User = require('../models/User');
 
 module.exports = async function(req, res, next) {
   // Get token from header
-  const token = req.header('x-auth-token');
+  const token = req.header('x-auth-token') || req.query.token;
 
   // Check if no token
   if (!token) {
@@ -18,24 +18,13 @@ module.exports = async function(req, res, next) {
   try {
     // Verify token
     const decoded = jwt.verify(token, config.jwt.secret);
-
-    // Add user from payload
-    req.user = decoded.user;
     
-    // Check if user still exists and is not disabled
-    const user = await User.findById(req.user.id).select('-password');
-    
-    if (!user) {
-      return res.status(401).json({ message: 'User not found' });
+    // Verify token structure
+    if (!decoded.id || !decoded.roles) {
+      throw new Error('Invalid token structure');
     }
     
-    if (user.isDisabled) {
-      return res.status(403).json({ message: 'Account is disabled' });
-    }
-    
-    // Attach full user object to request
-    req.userDetails = user;
-    
+    req.user = decoded;
     next();
   } catch (err) {
     console.error('Token verification failed:', err.message);

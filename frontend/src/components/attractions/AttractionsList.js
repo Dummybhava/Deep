@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getAttractions } from '../../services/api';
+import '../../cssStyles/attractions/AttractionsList.css'
 
 const AttractionsList = () => {
   const [attractions, setAttractions] = useState([]);
